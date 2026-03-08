@@ -1,0 +1,70 @@
+{
+  "video_title": "Google का SECRET AI Project 😱 दुनिया हिल जाएगी!",
+  "total_scenes": 7,
+  "estimated_duration": "70 seconds",
+  "scenes": [
+    {
+      "scene_number": 1,
+      "scene_name": "THE HOOK",
+      "duration": "0-5 sec",
+      "narration": "क्या आपको पता है... Google एक ऐसा AI बना रहा है... जो इंसानों से भी ज़्यादा SMART होगा?",
+      "visual_description": "Close-up of a glowing AI eye opening in darkness, transitioning to Google logo dissolving into neural network",
+      "ai_image_prompt": "Extreme close-up of a futuristic robotic eye opening in pitch darkness, glowing neon blue iris with circuit board patterns, particles of light floating around, Google colors blue red yellow green reflecting in the eye, cinematic lighting, 8K ultra-realistic, dramatic atmosphere, film grain, anamorphic lens flare",
+      "camera_movement": "Slow zoom into the eye, then quick snap zoom out to reveal full face"
+    },
+    {
+      "scene_number": 2,
+      "scene_name": "INTRODUCTION",
+      "duration": "5-15 sec",
+      "narration": "Google ने चुपचाप एक SECRET project शुरू किया है जिसका नाम है Project Astra। ये कोई ordinary AI नहीं है। ये AI देख सकता है, सुन सकता है, समझ सकता है — बिल्कुल इंसानों की तरह।",
+      "visual_description": "Dark underground Google lab with holographic displays, scientists working on advanced AI, PROJECT ASTRA text appearing in hologram",
+      "ai_image_prompt": "Secret underground high-tech laboratory with Google branding, holographic displays showing neural networks and AI data streams, scientists in lab coats working on futuristic computers, dark moody atmosphere with blue and purple neon lighting, PROJECT ASTRA text floating as a hologram in the center, volumetric fog, cinematic composition, ultra-detailed, 8K, sci-fi movie aesthetic",
+      "camera_movement": "Dolly forward through the lab, slow pan across holographic displays"
+    },
+    {
+      "scene_number": 3,
+      "scene_name": "DEMONSTRATION",
+      "duration": "15-30 sec",
+      "narration": "सोचो... आप अपने phone का camera किसी चीज़ पर point करो, और AI तुरंत बता दे कि ये क्या है, कैसे काम करता है, और इसकी price क्या है। Project Astra exactly यही करता है।",
+      "visual_description": "A hand holding a futuristic smartphone, camera pointed at various objects, AI overlay identifying them with floating data labels",
+      "ai_image_prompt": "Human hand holding a sleek futuristic transparent smartphone, AR augmented reality overlay showing AI analysis of surrounding objects with floating holographic labels and data, urban environment background, neon blue scanning beams emanating from phone camera, futuristic UI elements, photorealistic, cinematic lighting, depth of field, 8K ultra HD",
+      "camera_movement": "Over-the-shoulder shot, subtle handheld movement, zoom into phone screen"
+    },
+    {
+      "scene_number": 4,
+      "scene_name": "THE MEMORY REVEAL",
+      "duration": "30-45 sec",
+      "narration": "लेकिन सबसे SHOCKING बात ये है — Google ने इस AI को memory दी है। ये याद रखता है कि आपने पहले क्या पूछा, कहाँ रखा, क्या किया।",
+      "visual_description": "Digital brain forming from thousands of memory fragments — photos, conversations, locations — all connecting like a constellation",
+      "ai_image_prompt": "Massive digital human brain made of glowing data fragments, memory nodes connecting like constellations, floating photographs, text messages, location pins, and voice waveforms orbiting around the brain, dark cosmic background with deep blue and purple nebula, golden neural connections pulsing with light, ultra-detailed, 8K, cinematic wide shot, sci-fi concept art style",
+      "camera_movement": "360 degree orbit around the brain, slow zoom in as connections light up"
+    },
+    {
+      "scene_number": 5,
+      "scene_name": "PERSONAL ASSISTANT",
+      "duration": "45-55 sec",
+      "narration": "ये practically आपका personal AI assistant बन जाएगा जो 24/7 आपके साथ रहेगा।",
+      "visual_description": "Split screen: morning routine, office work, evening relaxation — all with a ghostly AI companion hologram helping",
+      "ai_image_prompt": "Cinematic triptych split-screen showing three scenes of daily life: morning coffee with holographic AI assistant showing weather and schedule, office desk with AI helping on screen, evening couch with AI recommending entertainment, friendly translucent blue holographic AI figure present in all three, warm and cool lighting contrast, photorealistic, lifestyle photography style, 8K ultra HD",
+      "camera_movement": "Smooth horizontal pan across the three scenes, gentle parallax effect"
+    },
+    {
+      "scene_number": 6,
+      "scene_name": "EXPERT WARNING",
+      "duration": "55-65 sec",
+      "narration": "Experts कह रहे हैं कि अगले 2 साल में ये technology हर smartphone में आ जाएगी। मतलब... जो काम आज 10 लोगों की team करती है, वो एक AI अकेला कर देगा।",
+      "visual_description": "Futuristic cityscape where everyone has AI companions, then dramatic shot of office chairs becoming empty one by one",
+      "ai_image_prompt": "Futuristic smart city aerial view at golden hour, people walking with holographic AI companions floating beside them, then transition to a modern office where chairs are spinning empty one by one, dramatic cinematic lighting, contrast between hope and fear, dystopian undertone, volumetric light rays, 8K ultra-realistic, Christopher Nolan movie aesthetic",
+      "camera_movement": "Drone shot over city, then dramatic dolly zoom vertigo effect on empty office"
+    },
+    {
+      "scene_number": 7,
+      "scene_name": "CALL TO ACTION",
+      "duration": "65-75 sec",
+      "narration": "तो क्या AI सच में इंसानों की जगह ले लेगा? Comment में बताओ! और ऐसी ही mind-blowing AI updates के लिए channel को SUBSCRIBE करो और bell icon दबाओ!",
+      "visual_description": "Dynamic subscribe button animation, bell icon ringing, comment section appearing, channel logo reveal",
+      "ai_image_prompt": "Dynamic YouTube subscribe button and bell icon in 3D, glowing red subscribe button with golden bell icon, floating comment bubbles with AI-themed emojis, dark gradient background with neon blue and red accents, particles and light streaks, motion blur effect, cinematic 3D render, ultra-detailed, 8K",
+      "camera_movement": "Quick zoom into subscribe button, shake effect on bell ring"
+    }
+  ]
+}

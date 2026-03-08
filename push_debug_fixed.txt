@@ -1,0 +1,84 @@
+﻿git : remote: error: GH013: 
+Repository rule violations 
+found for refs/heads/main.    
+    
+At line:1 char:1
++ git push https://ghp_Bc4fKt3
+YJceR651tiK0kfoE5SCxm0A0Qanqd@
+github.com/ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo          : 
+    NotSpecified: (remote: e  
+  rror: ...s/main.        :   
+ String) [], RemoteExcepti    
+on
+    + FullyQualifiedErrorId : 
+    NativeCommandError
+ 
+remote: 
+remote: - GITHUB PUSH 
+PROTECTION        
+remote:   ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇ
+öΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇ
+öΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇ
+öΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇ
+öΓÇöΓÇöΓÇöΓÇö        
+remote:     Resolve the 
+following violations before 
+pushing again        
+remote: 
+remote:     - Push cannot 
+contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to 
+resolve a blocked push        
+remote:      https://docs.gith
+ub.com/code-security/secret-sc
+anning/working-with-secret-sca
+nning-and-push-protection/work
+ing-with-push-protection-from-
+the-command-line#resolving-a-b
+locked-push        
+remote:             
+remote:             
+remote:       ΓÇöΓÇö OpenAI 
+API Key ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓ
+ÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓ
+ÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓ
+ÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö    
+    
+remote:        locations:     
+   
+remote:          - commit: f99
+c539063099c4ead8ffde22f5cbe7cf
+5fd644c        
+remote:            path: 
+index.html:746        
+remote:             
+remote:        (?) To push, 
+remove secret from commit(s) 
+or follow this URL to allow 
+the secret.        
+remote:        https://github.
+com/drnarayanbamania-del/MY-YO
+U-TUBE-AI-CHANNEL-AUTOMATION-2
+026/security/secret-scanning/u
+nblock-secret/3AfAWdmh2HpJotFS
+VzsSEtDQGqV        
+remote:             
+remote: 
+remote: 
+To https://github.com/drnaraya
+nbamania-del/MY-YOU-TUBE-AI-CH
+ANNEL-AUTOMATION-2026.git
+ ! [remote rejected] main -> 
+main (push declined due to 
+repository rule violations)
+error: failed to push some 
+refs to 'https://github.com/dr
+narayanbamania-del/MY-YOU-TUBE
+-AI-CHANNEL-AUTOMATION-2026.gi
+t'

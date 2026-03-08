@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Credentials & Tokens (CRITICAL: DO NOT PUSH THESE)
+client_secret.json
+youtube_token.json
+.env
+*.json.bak
+
+# Generated Media
+final_video.mp4
+voiceover_final.wav
+voiceover_scene_*.wav
+agi_scenes/
+agi_thumbnail.png
+thumbnail.png
+temp_scene_*.mp4
+temp_script_*.js
+
+# Logs and Debug
+*.log
+brain_error.txt
+models.json
+check_status.js
+test_gemini.js
+test_rest.js
+list_models.js
+
+# OS Files
+.DS_Store
+Thumbs.db

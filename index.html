@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 YouTube AI Content Factory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #06060f;
+            --bg-secondary: #0d0d1f;
+            --bg-card: #111128;
+            --bg-hover: #1a1a3a;
+            --border: #1e1e3e;
+            --border-active: #667eea;
+            --text-primary: #f0f0f0;
+            --text-secondary: #888;
+            --text-muted: #555;
+            --accent-blue: #667eea;
+            --accent-purple: #764ba2;
+            --accent-pink: #f093fb;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-yellow: #fbbf24;
+            --accent-orange: #f97316;
+            --gradient-main: linear-gradient(135deg, #667eea, #764ba2);
+            --gradient-success: linear-gradient(135deg, #22c55e, #16a34a);
+            --gradient-warm: linear-gradient(135deg, #f97316, #ef4444);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hero Header */
+        .hero {
+            position: relative;
+            padding: 40px 20px 30px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            background: radial-gradient(ellipse at 50% 0%, rgba(102,126,234,0.12) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, rgba(118,75,162,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            background: var(--gradient-main);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .hero .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 400;
+            position: relative;
+        }
+
+        .hero .video-title {
+            margin-top: 16px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            position: relative;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 0 20px 20px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .nav-tab {
+            padding: 10px 18px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-tab:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+        .nav-tab.active {
+            background: var(--gradient-main);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+        }
+
+        /* Container */
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 40px; }
+
+        /* Section */
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover { border-color: #2a2a5a; }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Scene Cards */
+        .scene-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) { 
+            .scene-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.8rem; }
+            .nav-tabs { flex-direction: column; padding: 0 10px 20px; gap: 8px; }
+            .nav-tab { width: 100%; text-align: center; }
+            .quick-actions-grid { grid-template-columns: 1fr !important; }
+            .vo-scene { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .vo-scene-audio { width: 100%; }
+        }
+
+        .scene-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .scene-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+        .scene-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .scene-body { padding: 14px; }
+
+        .scene-num {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-blue);
+            margin-bottom: 4px;
+        }
+
+        .scene-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .scene-narration {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .scene-camera {
+            font-size: 0.72rem;
+            color: var(--accent-purple);
+            font-weight: 500;
+        }
+
+        .scene-audio-player { width: 100%; height: 36px; margin-top: 8px; border-radius: var(--radius-sm); }
+
+        /* Voiceover Section */
+        .vo-config {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 768px) { .vo-config { grid-template-columns: 1fr 1fr; } }
+
+        .vo-field label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .vo-field input, .vo-field select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            transition: border-color 0.3s;
+        }
+
+        .vo-field input:focus, .vo-field select:focus { border-color: var(--accent-blue); outline: none; }
+
+        /* Voiceover Scene List */
+        .vo-scene {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .vo-scene.generating { border-color: var(--accent-blue); animation: glow 1.5s infinite alternate; }
+        .vo-scene.done { border-color: var(--accent-green); }
+        .vo-scene.error { border-color: var(--accent-red); }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(102,126,234,0.1); }
+            to { box-shadow: 0 0 15px rgba(102,126,234,0.25); }
+        }
+
+        .vo-scene-num {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .vo-scene-info { flex: 1; min-width: 0; }
+        .vo-scene-name { font-weight: 600; font-size: 0.85rem; }
+        .vo-scene-text { font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .vo-scene-status {
+            font-size: 0.7rem; font-weight: 600; padding: 3px 10px;
+            border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        .status-pending { background: #333; color: #777; }
+        .status-gen { background: rgba(102,126,234,0.2); color: var(--accent-blue); }
+        .status-done { background: rgba(34,197,94,0.2); color: var(--accent-green); }
+        .status-err { background: rgba(239,68,68,0.2); color: var(--accent-red); }
+
+        .vo-scene-audio { flex-shrink: 0; }
+        .vo-scene-audio audio { height: 32px; width: 160px; border-radius: 6px; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 14px 28px; border: none; border-radius: var(--radius);
+            font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease; width: 100%;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .btn-primary { background: var(--gradient-main); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102,126,234,0.35); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-success { background: var(--gradient-success); color: white; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(34,197,94,0.35); }
+
+        .btn-outline {
+            background: transparent; border: 2px solid var(--accent-green); color: var(--accent-green);
+        }
+        .btn-outline:hover { background: var(--accent-green); color: #000; }
+
+        /* Progress */
+        .progress-track { width: 100%; height: 5px; background: #1a1a2e; border-radius: 3px; margin: 12px 0; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--gradient-main); border-radius: 3px; transition: width 0.5s ease; width: 0%; }
+
+        .status-msg { text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px; }
+
+        /* Final Audio Box */
+        .final-box {
+            display: none;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-green);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .final-box h3 { color: var(--accent-green); margin-bottom: 6px; font-size: 1.1rem; }
+        .final-box p { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 14px; }
+
+        /* SEO / Metadata */
+        .meta-group { margin-bottom: 16px; }
+
+        .meta-label {
+            font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px;
+        }
+
+        .meta-value {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .meta-value:hover { border-color: var(--accent-blue); }
+
+        .meta-value .copy-hint {
+            position: absolute; top: 8px; right: 8px;
+            font-size: 0.65rem; color: var(--text-muted);
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+        .meta-value:hover .copy-hint { opacity: 1; }
+
+        .copy-toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--accent-green); color: #000;
+            padding: 10px 24px; border-radius: 30px; font-size: 0.85rem; font-weight: 600;
+            opacity: 0; transition: all 0.3s ease; pointer-events: none; z-index: 999;
+        }
+
+        .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Tags */
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .tag {
+            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 500;
+            background: rgba(102,126,234,0.12); color: var(--accent-blue); border: 1px solid rgba(102,126,234,0.2);
+        }
+
+        .hashtag { background: rgba(249,115,22,0.12); color: var(--accent-orange); border-color: rgba(249,115,22,0.2); }
+
+        /* Thumbnail */
+        .thumb-preview {
+            width: 100%; max-width: 640px; border-radius: var(--radius);
+            border: 2px solid var(--border); margin: 0 auto 16px; display: block;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 12px; margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+        .stat-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 16px; text-align: center;
+        }
+
+        .stat-value { font-size: 1.6rem; font-weight: 800; }
+        .stat-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+        .text-blue { color: var(--accent-blue); }
+        .text-green { color: var(--accent-green); }
+        .text-purple { color: var(--accent-purple); }
+        .text-yellow { color: var(--accent-yellow); }
+
+        /* Pinned Comment */
+        .pinned-comment {
+            background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-sm);
+            padding: 14px; font-size: 0.85rem; line-height: 1.7; white-space: pre-line;
+        }
+
+        /* Table */
+        .info-table { width: 100%; border-collapse: collapse; }
+        .info-table th, .info-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .info-table th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+    <h1>🎬 YouTube AI Content Factory</h1>
+    <p class="subtitle">AI Niche • Hindi • 60-90 Seconds • Powered by Sarvam AI</p>
+    <p class="video-title">AGI: जब AI इंसानों से ज़्यादा Smart हो जाएगा! 🤯</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('overview')">📊 Overview</button>
+    <button class="nav-tab" onclick="showSection('scenes')">🎬 Scenes</button>
+    <button class="nav-tab" onclick="showSection('voiceover')">🎙️ Voiceover</button>
+    <button class="nav-tab" onclick="showSection('thumbnail')">🖼️ Thumbnail</button>
+    <button class="nav-tab" onclick="showSection('seo')">🔍 SEO & Upload</button>
+    <button class="nav-tab" onclick="showSection('niche-config')">✍️ Config</button>
+    <button class="nav-tab" onclick="showSection('automation')" style="background:var(--accent-blue);color:#fff;border:none;">🚀 Run Automation</button>
+</div>
+
+<!-- Copy Toast -->
+<div class="copy-toast" id="copyToast">✅ Copied to clipboard!</div>
+
+<div class="container">
+
+    <!-- ============ OVERVIEW ============ -->
+    <div class="section active" id="sec-overview">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-value text-blue">7</div>
+                <div class="stat-label">Scenes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-green">~70s</div>
+                <div class="stat-label">Duration</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-purple">20</div>
+                <div class="stat-label">SEO Tags</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value text-yellow">9/10</div>
+                <div class="stat-label">Click Score</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📋 Video Package Status</div>
+            <table class="info-table">
+                <tr><th>Component</th><th>Status</th><th>Details</th></tr>
+                <tr><td>📝 Hindi Script</td><td style="color:var(--accent-green)">✅ Ready</td><td>7 scenes, ~180 words</td></tr>
+                <tr><td>🎬 Scene Images</td><td style="color:var(--accent-green)">✅ Generated</td><td>7 cinematic images</td></tr>
+                <tr><td>🎙️ Voiceover</td><td style="color:var(--accent-yellow)">⚡ Generate</td><td>Sarvam AI Bulbul v3</td></tr>
+                <tr><td>📜 Subtitles</td><td style="color:var(--accent-green)">✅ Ready</td><td>26 SRT entries</td></tr>
+                <tr><td>🖼️ Thumbnail</td><td style="color:var(--accent-green)">✅ Generated</td><td>High-CTR design</td></tr>
+                <tr><td>🔍 SEO Package</td><td style="color:var(--accent-green)">✅ Ready</td><td>Title, desc, 20 tags</td></tr>
+                <tr><td>📋 Metadata</td><td style="color:var(--accent-green)">✅ Ready</td><td>Category, time, comment</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🚀 Quick Actions</div>
+            <div class="quick-actions-grid" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 8px;">
+                <button class="btn btn-primary" onclick="showSection('voiceover')">🎙️ 1. Voiceover</button>
+                <button class="btn btn-outline" onclick="showSection('niche-config')">✍️ Configure Niche</button>
+                <button class="btn btn-success" onclick="showSection('automation')" style="background: var(--accent-blue); border: none;">🚀 Automation Hub</button>
+            </div>
+        </div>
+            
+
+
+        <div class="card">
+            <div class="card-title">📊 Trending Topic Analysis</div>
+            <table class="info-table">
+                <tr><th>#</th><th>Video Idea</th><th>Click</th><th>Competition</th></tr>
+                <tr style="background:rgba(102,126,234,0.1)"><td>⭐ 1</td><td><strong>AGI: When AI becomes smarter than humans</strong></td><td><strong>10</strong></td><td><strong style="color:var(--accent-green)">Low</strong></td></tr>
+                <tr><td>2</td><td>Will AI kill all human jobs by 2030?</td><td>9</td><td>High</td></tr>
+                <tr><td>3</td><td>The dark side of Neuralink and AI chips</td><td>8</td><td>Medium</td></tr>
+                <tr><td>4</td><td>AI singularity: The point of no return</td><td>8</td><td>Low</td></tr>
+                <tr><td>5</td><td>OpenAI's secret Q-Star project explained</td><td>9</td><td>Medium</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============ SCENES ============ -->
+    <div class="section" id="sec-scenes">
+        <div class="card" style="margin-bottom: 20px;">
+            <div class="card-title">📝 Full Hindi Script</div>
+            <div class="meta-value" onclick="copyText(this)" style="white-space: pre-line; font-size: 0.9rem; line-height: 1.8;">क्या आपको लगता है ChatGPT बहुत smart है? तो आप बहुत बड़ी गलतफहमी में हैं!
+
+ChatGPT तो बस एक झांकी है। Asli खतरा या चमत्कार तो अब आने वाला है, जिसका नाम है AGI... यानी Artificial General Intelligence!
+
+AGI कोई normal AI नहीं है। ये एक ऐसा super-brain होगा जो इंसानों से भी ज़्यादा तेज़ सोच सकेगा। आप कोई भी काम सोच लो—चाहे rocket science हो, कोडिंग हो, या कोई नई दवाई बनाना हो—AGI वो काम इंसानों से 1000 गुना बेहतर कर पाएगा।
+
+OpenAI और Google जैसी कंपनियां दिन-रात AGI बनाने में लगी हैं। Experts का मानना है कि 2027 तक AGI दुनिया में आ जाएगा।
+
+लेकिन सवाल ये है... जब मशीनें हम इंसानों से ज़्यादा समझदार हो जाएंगी, तो क्या वो हमारी सुनेंगी? Elon Musk खुद कह चुके हैं कि AGI इंसानों के लिए सबसे बड़ा खतरा बन सकता है।
+
+क्या हम AGI के लिए तैयार हैं? अपनी राय comment में बताओ! और ऐसी ही mind-blowing AI updates के लिए AI mdico channel को SUBSCRIBE करो! 🔔<span class="copy-hint">📋 Click to copy</span></div>
+        </div>
+
+        <div class="scene-grid" id="sceneGrid"></div>
+    </div>
+
+    <!-- ============ VOICEOVER ============ -->
+    <div class="section" id="sec-voiceover">
+        <div class="card">
+            <div class="card-title">⚙️ Sarvam AI Configuration</div>
+            <div class="vo-config">
+                <div class="vo-field">
+                    <label>API Key</label>
+                    <input type="password" id="apiKey" value="sk_aqlk3i13_mTuUOROjLOLjah0BZzd5Hs96" placeholder="sk_...">
+                </div>
+                <div class="vo-field">
+                    <label>Voice</label>
+                    <select id="speaker">
+                        <option value="shubh" selected>Shubh (Male)</option>
+                        <option value="manan">Manan (Male)</option>
+                        <option value="aditya">Aditya (Male)</option>
+                        <option value="shreya">Shreya (Female)</option>
+                        <option value="ishita">Ishita (Female)</option>
+                        <option value="ritu">Ritu (Female)</option>
+                        <option value="priya">Priya (Female)</option>
+                        <option value="rahul">Rahul (Male)</option>
+                    </select>
+                </div>
+                <div class="vo-field">
+                    <label>Pace</label>
+                    <select id="pace">
+                        <option value="0.9">0.9x</option>
+                        <option value="1.0">1.0x</option>
+                        <option value="1.05" selected>1.05x</option>
+                        <option value="1.1">1.1x</option>
+                    </select>
+                </div>
+                <div class="vo-field">
+                    <label>Model</label>
+                    <select id="model">
+                        <option value="bulbul:v3" selected>Bulbul v3</option>
+                        <option value="bulbul:v2">Bulbul v2</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-track"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="status-msg" id="statusText">Ready — Click Generate to start</div>
+
+        <div id="voSceneList"></div>
+
+        <button class="btn btn-primary" id="btnGenerate" onclick="generateAll()" style="margin-top: 16px;">
+            🎙️ Generate Voiceover
+        </button>
+
+        <div class="final-box" id="finalBox">
+            <h3>✅ Voiceover Generation Complete!</h3>
+            <p>All scenes merged with cinematic pauses</p>
+            <audio controls id="finalPlayer" style="width: 100%; margin-bottom: 14px;"></audio>
+            <button class="btn btn-outline" onclick="downloadWav()" style="margin-top: 8px;">
+                ⬇️ Download Final Voiceover (WAV)
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ THUMBNAIL ============ -->
+    <div class="section" id="sec-thumbnail">
+        <div class="card">
+            <div class="card-title">🖼️ Generated Thumbnail</div>
+            <img src="agi_thumbnail.png" alt="YouTube Thumbnail" class="thumb-preview">
+            <div class="meta-group">
+                <div class="meta-label">Text Overlay (add in Canva/Photoshop)</div>
+                <div class="meta-value" onclick="copyText(this)">
+                    Main Text: AGI: THE END? (Yellow, Bold)
+Composition: Ensure text goes across the split screen
+Detail: Add subtle "2027" hidden in the background design<span class="copy-hint">📋 Click to copy</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SEO & UPLOAD ============ -->
+    <div class="section" id="sec-seo">
+        <div class="card">
+            <div class="card-title">🏆 Final Title</div>
+            <div class="meta-value" onclick="copyText(this)" style="font-size: 1.1rem; font-weight: 700; color: var(--accent-yellow);">
+                AGI: जब AI इंसानों से ज़्यादा Smart हो जाएगा! 🤯<span class="copy-hint">📋 Click to copy</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📝 SEO Description</div>
+            <div class="meta-value" onclick="copyText(this)" style="white-space: pre-line;">AGI: जब AI इंसानों से ज़्यादा Smart हो जाएगा! 🤯
+
+क्या हम इंसान दुनिया की सबसे smart species बने रहेंगे? या फिर AGI (Artificial General Intelligence) हमारी जगह ले लेगा? AI mdico के इस video में हम बात करेंगे future of AI के सबसे बड़े खतरे और चमत्कार — AGI के बारे में। जानिए AGI क्या है, ये ChatGPT से कैसे अलग है, और OpenAI/Google इसे 2027 तक कैसे launch कर सकते हैं। क्या AI सच में control से बाहर हो जाएगा? 
+
+वीडियो को अंत तक देखें क्योंकि AGI का सच आपके होश उड़ा देगा! अगर आपको Artificial Intelligence, future technology, और science mysteries में interest है, तो AI mdico channel को SUBSCRIBE करना ना भूलें। 
+
+#AImdico #AGI #ArtificialIntelligence #FutureOfAI #AINews #TechHindi<span class="copy-hint">📋 Click to copy</span></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🏷️ YouTube Tags (click to copy all)</div>
+            <div class="tag-cloud" id="tagCloud" onclick="copyTags()"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"># Hashtags</div>
+            <div class="tag-cloud" id="hashCloud"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📋 Video Settings</div>
+            <table class="info-table">
+                <tr><th>Setting</th><th>Value</th></tr>
+                <tr><td>Category</td><td>Science & Technology</td></tr>
+                <tr><td>Best Posting Time</td><td>Sunday 11:00 AM IST / Weekdays 6-8 PM IST</td></tr>
+                <tr><td>Language</td><td>Hindi</td></tr>
+                <tr><td>Made for Kids</td><td>No</td></tr>
+                <tr><td>Visibility</td><td>Public</td></tr>
+                <tr><td>Comments</td><td>Enabled</td></tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-title">📌 Pinned Comment (click to copy)</div>
+            <div class="pinned-comment meta-value" onclick="copyText(this)">🤖 एक बात बताओ... अगर AGI कल ही आ जाए, तो आप सबसे पहला सवाल उससे क्या पूछोगे? 🤔👇 
+अपना जवाब COMMENT करो! और Video को LIKE करना मत भूलना! 👍<span class="copy-hint">📋 Click to copy</span></div>
+        </div>
+
+        <div class="card" style="border-color: var(--accent-red); margin-top: 24px;">
+            <div class="card-title"><span style="color:var(--accent-red)">🚀 YT Auto Upload Tool</span></div>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom: 12px;">We just added a Node.js Auto Uploader! To push your final video directly to YouTube without opening your browser:</p>
+            
+            <div style="background:var(--bg-primary); padding:16px; border-radius:var(--radius-sm); border:1px solid var(--border);">
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; font-weight:700;">1. Create your credentials</div>
+                <ul style="font-size:0.85rem; padding-left:16px; margin-bottom:12px; color:var(--text-secondary);">
+                    <li>Go to <a href="https://console.cloud.google.com/" target="_blank" style="color:var(--accent-blue)">Google Cloud Console</a> and create an OAuth 2.0 Web/Desktop app credential.</li>
+                    <li>Download the JSON file, save it as <code>client_secret.json</code> inside the <code>video_package</code> folder.</li>
+                </ul>
+
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; text-transform:uppercase; font-weight:700;">2. Run the Tools</div>
+                <code style="display:block; background:#000; color:var(--accent-green); padding:10px; border-radius:4px; font-family:monospace; font-size:0.9rem; margin-bottom:8px;">
+                    # To stitch the MP4 video:<br>
+                    node build_video.js<br><br>
+                    # To Auto-upload to YT:<br>
+                    node upload_to_youtube.js final_video.mp4<br><br>
+                    # OR RUN FULL AUTOMATION:<br>
+                    node auto_channel.js
+                </code>
+                
+                <p style="font-size:0.8rem; color:var(--text-secondary); margin-top: 10px;">
+                    <em>* Note: Automatically imports the Title, Tags, and Description directy from 'niche_config.js'. Uploads as 'Private' to be safe!</em>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ NICHE CONFIG ============ -->
+    <div class="section" id="sec-niche-config">
+        <div class="card">
+            <div class="card-title">✍️ Configure Niche Manually</div>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">Edit your niche parameters manually and download the new <code>niche_config.js</code> file.</p>
+            
+            <div class="vo-config" style="grid-template-columns: 1fr; gap: 16px;">
+                <div class="vo-field">
+                    <label>Channel Name</label>
+                    <input type="text" id="configChannel">
+                </div>
+                <div class="vo-field">
+                    <label>Channel URL</label>
+                    <input type="text" id="configChannelUrl">
+                </div>
+                <div class="vo-field">
+                    <label>Video Niche (Topic)</label>
+                    <input type="text" id="configTopic">
+                </div>
+                <div class="vo-field">
+                    <label>Scenes JSON Array</label>
+                    <textarea id="configScenes" rows="12" style="width: 100%; padding: 10px; background: var(--bg-primary); color: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: monospace;"></textarea>
+                </div>
+                <div class="vo-field">
+                    <label>Tags (comma separated)</label>
+                    <textarea id="configTags" rows="3" style="width: 100%; padding: 10px; background: var(--bg-primary); color: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm);"></textarea>
+                </div>
+                <div class="vo-field">
+                    <label>Hashtags (comma separated)</label>
+                    <input type="text" id="configHashtags">
+                </div>
+            </div>
+
+            <button class="btn btn-success" onclick="downloadConfig()" style="margin-top: 16px;">
+                💾 Download niche_config.js
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ REMOTE AUTHENTICATION HUB ============ -->
+    <div class="section" id="sec-auth">
+        <div class="card" style="border-left: 4px solid var(--accent-purple);">
+            <div class="card-title">🔐 Remote YouTube Authentication</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
+                Before you can upload videos to YouTube from this server (especially on Railway/Render), you must allow this app to access your YouTube channel. This creates a secure <code>youtube_token.json</code> on the server.
+            </p>
+
+            <div id="authStatusArea" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Current Status:</span>
+                    <span id="authBadge" class="badge" style="background: #ff5f56; margin-left: 10px;">Not Connected</span>
+                </div>
+                <button class="btn btn-primary" id="btnYoutubeLogin" onclick="loginToYoutube()" style="margin: 0;">
+                    Connect YouTube Channel
+                </button>
+            </div>
+            
+            <div id="authCallbackArea" style="display: none; padding: 15px; border: 1px dashed var(--accent-purple); border-radius: var(--radius-sm); margin-top: 10px;">
+                <p style="font-size: 0.8rem; color: var(--accent-purple); font-weight: bold; margin-bottom: 5px;">🔄 Completing connection...</p>
+                <p id="authCallbackStatus" style="font-size: 0.75rem; color: var(--text-secondary);">Sharing secure token with server...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ AUTOMATION HUB ============ -->
+    <div class="section" id="sec-automation">
+        <div class="card" style="border-color: var(--accent-blue);">
+            <div class="card-title"><span style="color:var(--accent-blue)">🤖 Full AI Automation Hub</span></div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+                This connects directly to your local Node.js server! When you press the button below, we will automatically run the voiceover generator, stitch your videos together with FFmpeg, and securely upload the final video package to YouTube in chronological order!
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto;">
+                <div>
+                    <label style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px;">🎙️ Sarvam Key (Voice)</label>
+                    <input type="password" id="autoApiKey" style="width: 100%; padding: 10px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; color: white;" placeholder="Required for Voice">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px;">🧠 Gemini Key (Brain)</label>
+                    <input type="password" id="geminiApiKey" style="width: 100%; padding: 10px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; color: white;" placeholder="Required for Research">
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px;">🖼️ OpenAI Key (Thumbnail)</label>
+                    <input type="password" id="openaiApiKey" style="width: 100%; padding: 10px; background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; color: white;" placeholder="Required for Poster">
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnRunAutomations" onclick="startAutomations()" style="width: 100%; margin-bottom: 20px; font-size: 1.1rem; padding: 18px; background: var(--gradient-main); border: none;">
+                🚀 START AUTOMATION BOT 🚀
+            </button>
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <a href="http://localhost:3000/api/download-zip" class="btn btn-outline" style="display: block; text-decoration: none;">
+                    📦 Download Full Video Package (.zip)
+                </a>
+            </div>
+
+            <!-- Terminal Window Component -->
+            <div style="background: #0d1117; border: 1px solid #30363d; border-radius: var(--radius-sm); overflow: hidden;">
+                <div style="background: #161b22; padding: 8px 16px; border-bottom: 1px solid #30363d; display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+                    <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+                    <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+                    <span style="color: #8b949e; font-size: 0.75rem; font-family: monospace; margin-left: auto;">node server.js</span>
+                </div>
+                <div id="terminalScreen" style="height: 400px; padding: 16px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #56b6c2; overflow-y: auto; white-space: pre-wrap; line-height: 1.5; background: #000;">Waiting for instructions...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="niche_config.js"></script>
+<script>
+// ===========================================
+// 🌍 GLOBAL INITIALIZATION & AUTH
+// ===========================================
+document.addEventListener('DOMContentLoaded', () => {
+    checkYoutubeStatus();
+    handleOAuthCallback();
+    initConfigForm();
+});
+
+async function checkYoutubeStatus() {
+    try {
+        const res = await fetch('/api/youtube/status');
+        const data = await res.json();
+        const badge = document.getElementById('authBadge');
+        const btn = document.getElementById('btnYoutubeLogin');
+        
+        if (data.authenticated) {
+            badge.textContent = 'CONNECTED';
+            badge.style.background = '#27c93f';
+            btn.textContent = 'Change YouTube Account';
+            btn.classList.replace('btn-primary', 'btn-outline');
+        } else {
+            badge.textContent = 'NOT CONNECTED';
+            badge.style.background = '#ff5f56';
+            btn.textContent = 'Connect YouTube Channel';
+        }
+    } catch (e) { console.error('Status check failed', e); }
+}
+
+async function loginToYoutube() {
+    try {
+        const btn = document.getElementById('btnYoutubeLogin');
+        btn.textContent = '⏳ Redirecting to Google...';
+        btn.disabled = true;
+
+        const res = await fetch('/api/youtube/auth-url');
+        const data = await res.json();
+        if (data.url) {
+            window.location.href = data.url;
+        } else {
+            alert('Error: client_secret.json might be missing on server!');
+            btn.disabled = false;
+        }
+    } catch (e) { 
+        alert('Could not connect to server.');
+        btn.disabled = false;
+    }
+}
+
+async function handleOAuthCallback() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    
+    if (code) {
+        // Show callback UI
+        document.getElementById('authCallbackArea').style.display = 'block';
+        const statusText = document.getElementById('authCallbackStatus');
+        
+        try {
+            statusText.textContent = '🛡️ Exchanging code for secure token...';
+            const res = await fetch('/api/youtube/callback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+                statusText.innerHTML = '<span style="color: #98c379">✅ YouTube account linked successfully! You can now start automating.</span>';
+                // Clear URL params without reloading
+                window.history.replaceState({}, document.title, window.location.pathname);
+                setTimeout(checkYoutubeStatus, 1500);
+                setTimeout(() => { document.getElementById('authCallbackArea').style.display = 'none'; }, 5000);
+            } else {
+                statusText.innerHTML = `<span style="color: #e06c75">❌ Error: ${data.error}</span>`;
+            }
+        } catch (e) {
+            statusText.innerHTML = '<span style="color: #e06c75">❌ Network Error. Please try again.</span>';
+        }
+    }
+}
+
+// ============================================================
+// AUTOMATION REALTIME STREAMING SERVER
+// ============================================================
+function startAutomations() {
+    const btn = document.getElementById('btnRunAutomations');
+    const terminal = document.getElementById('terminalScreen');
+    
+    btn.disabled = true;
+    btn.textContent = '⏳ RUNNING AUTOMATIONS... DO NOT CLOSE WINDOW';
+    terminal.innerHTML = '<span style="color: #e5c07b;">> Connecting to local server API...</span><br>';
+    
+    try {
+        const sarvamKey = document.getElementById('autoApiKey').value;
+        const geminiKey = document.getElementById('geminiApiKey').value;
+        const openaiKey = document.getElementById('openaiApiKey').value;
+        const payload = { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sarvamKey, geminiKey, openaiKey }) 
+        };
+        
+        // This initiates streaming!
+        fetch('http://localhost:3000/api/run-automation', payload).then(async response => {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let isDone = false;
+            
+            while (!isDone) {
+                const { done, value } = await reader.read();
+                isDone = done;
+                if (value) {
+                    const chunk = decoder.decode(value, { stream: true });
+                    // Sanitize HTML and append
+                    terminal.innerHTML += chunk.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, '<br>');
+                    terminal.scrollTop = terminal.scrollHeight; // Auto-scroll!
+                }
+            }
+            
+            terminal.innerHTML += '<br><span style="color: #98c379;">> SERVER DISCONNECTED</span><br>';
+            btn.textContent = '🎉 AUTOMATION PROCESS COMPLETED';
+            btn.classList.add('btn-success');
+        }).catch(err => {
+            terminal.innerHTML += '<br><span style="color: #e06c75;">> SERVER CONNERROR: Could not reach backend!</span><br><span style="color: #e06c75;">> Did you forget to start the Node server? Run "node server.js" in terminal first!</span><br>';
+            btn.disabled = false;
+            btn.textContent = '❌ FAILED (SEE LOGS)';
+        });
+    } catch(err) {
+        terminal.innerHTML += `<br><span style="color: #e06c75;">> Error: ${err}</span><br>`;
+    }
+}
+// ============================================================
+// CONFIG GENERATOR
+// ============================================================
+function initConfigForm() {
+    if (typeof CHANNEL_NAME !== 'undefined') document.getElementById('configChannel').value = CHANNEL_NAME;
+    if (typeof CHANNEL_URL !== 'undefined') document.getElementById('configChannelUrl').value = CHANNEL_URL;
+    if (typeof VIDEO_NICHE !== 'undefined') document.getElementById('configTopic').value = VIDEO_NICHE;
+    if (typeof SCENES !== 'undefined') document.getElementById('configScenes').value = JSON.stringify(SCENES, null, 4);
+    if (typeof TAGS !== 'undefined') document.getElementById('configTags').value = Object.values(TAGS).join(', ');
+    if (typeof HASHTAGS !== 'undefined') document.getElementById('configHashtags').value = Object.values(HASHTAGS).join(', ');
+}
+
+function downloadConfig() {
+    try {
+        const channel = document.getElementById('configChannel').value;
+        const channelUrl = document.getElementById('configChannelUrl').value;
+        const topic = document.getElementById('configTopic').value;
+        const scenesRaw = document.getElementById('configScenes').value;
+        JSON.parse(scenesRaw); // Validate JSON
+        
+        const tags = document.getElementById('configTags').value.split(',').map(s => s.trim()).filter(s=>s);
+        const hashtags = document.getElementById('configHashtags').value.split(',').map(s => s.trim()).filter(s=>s);
+        
+        const content = `// ==========================================
+// ⚙️ YOUTUBE VIDEO PACKAGE CONFIGURATION
+// ==========================================
+
+const CHANNEL_NAME = "${channel.replace(/"/g, '\\"')}";
+const CHANNEL_URL = "${channelUrl.replace(/"/g, '\\"')}";
+const VIDEO_NICHE = "${topic.replace(/"/g, '\\"')}";
+
+const SCENES = ${scenesRaw};
+
+const TAGS = ${JSON.stringify(tags)};
+
+const HASHTAGS = ${JSON.stringify(hashtags)};
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { CHANNEL_NAME, CHANNEL_URL, VIDEO_NICHE, SCENES, TAGS, HASHTAGS };
+}
+`;
+        const blob = new Blob([content], { type: 'application/javascript' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'niche_config.js';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } catch (e) {
+        alert("Invalid JSON format in Scenes array: " + e.message);
+    }
+}
+
+// Call initConfigForm on content load
+window.addEventListener('DOMContentLoaded', initConfigForm);
+
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('sec-'+id).classList.add('active');
+    event.target.classList.add('active');
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderSceneGrid() {
+    document.getElementById('sceneGrid').innerHTML = SCENES.map(s => `
+        <div class="scene-card">
+            <img src="${s.img}" alt="Scene ${s.id}" class="scene-img" onerror="this.style.display='none'">
+            <div class="scene-body">
+                <div class="scene-num">Scene ${s.id} • ${s.duration}</div>
+                <div class="scene-name">${s.name}</div>
+                <div class="scene-narration">"${s.text}"</div>
+                <div class="scene-camera">🎥 ${s.camera}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderVoScenes() {
+    document.getElementById('voSceneList').innerHTML = SCENES.map(s => `
+        <div class="vo-scene" id="vo-${s.id}">
+            <div class="vo-scene-num">${s.id}</div>
+            <div class="vo-scene-info">
+                <div class="vo-scene-name">${s.name}</div>
+                <div class="vo-scene-text">${s.text}</div>
+            </div>
+            <span class="vo-scene-status status-pending" id="voBadge-${s.id}">Pending</span>
+            <div class="vo-scene-audio" id="voAudio-${s.id}"></div>
+        </div>
+    `).join('');
+}
+
+function renderTags() {
+    document.getElementById('tagCloud').innerHTML = TAGS.map(t => `<span class="tag">${t}</span>`).join('');
+    document.getElementById('hashCloud').innerHTML = HASHTAGS.map(h => `<span class="tag hashtag">${h}</span>`).join('');
+}
+
+// ============================================================
+// COPY
+// ============================================================
+function copyText(el) {
+    const text = el.innerText.replace('📋 Click to copy', '').trim();
+    navigator.clipboard.writeText(text);
+    showToast();
+}
+
+function copyTags() {
+    navigator.clipboard.writeText(TAGS.join(', '));
+    showToast();
+}
+
+function showToast() {
+    const t = document.getElementById('copyToast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ============================================================
+// SARVAM AI TTS
+// ============================================================
+const audioBuffers = [];
+let isGenerating = false;
+
+async function textToSpeech(text) {
+    const body = {
+        inputs: [text],
+        target_language_code: 'hi-IN',
+        model: document.getElementById('model').value,
+        speaker: document.getElementById('speaker').value,
+        pace: parseFloat(document.getElementById('pace').value),
+    };
+    if (body.model === 'bulbul:v3') body.temperature = 0.7;
+
+    const res = await fetch('http://localhost:3000/api/proxy-tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'api-subscription-key': document.getElementById('apiKey').value },
+        body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    if (data.audios && data.audios[0]) return data.audios[0];
+    throw new Error('No audio');
+}
+
+function b64ToBlob(b64) {
+    const bytes = atob(b64), arr = [];
+    for (let i = 0; i < bytes.length; i += 512) {
+        const s = bytes.slice(i, i+512), n = new Array(s.length);
+        for (let j = 0; j < s.length; j++) n[j] = s.charCodeAt(j);
+        arr.push(new Uint8Array(n));
+    }
+    return new Blob(arr, { type: 'audio/wav' });
+}
+
+function b64ToAB(b64) {
+    const bytes = atob(b64), u = new Uint8Array(bytes.length);
+    for (let i = 0; i < bytes.length; i++) u[i] = bytes.charCodeAt(i);
+    return u.buffer;
+}
+
+async function generateAll() {
+    if (isGenerating) return;
+    isGenerating = true;
+    const btn = document.getElementById('btnGenerate');
+    btn.disabled = true; btn.textContent = '⏳ Generating...';
+    document.getElementById('finalBox').style.display = 'none';
+    audioBuffers.length = 0;
+
+    let done = 0;
+    for (const s of SCENES) {
+        const row = document.getElementById('vo-'+s.id);
+        const badge = document.getElementById('voBadge-'+s.id);
+        row.className = 'vo-scene generating';
+        badge.className = 'vo-scene-status status-gen'; badge.textContent = 'Generating...';
+        document.getElementById('statusText').textContent = `Scene ${s.id}/${SCENES.length}: ${s.name}...`;
+
+        try {
+            const b64 = await textToSpeech(s.text);
+            const url = URL.createObjectURL(b64ToBlob(b64));
+            document.getElementById('voAudio-'+s.id).innerHTML = `<audio controls style="height:32px;width:160px;border-radius:6px;" src="${url}"></audio>`;
+            audioBuffers.push({ base64: b64, pauseMs: s.pauseMs });
+            row.className = 'vo-scene done';
+            badge.className = 'vo-scene-status status-done'; badge.textContent = '✅ Done';
+        } catch(e) {
+            row.className = 'vo-scene error';
+            badge.className = 'vo-scene-status status-err'; badge.textContent = '❌ Error';
+            document.getElementById('voAudio-'+s.id).innerHTML = `<span style="color:var(--accent-red);font-size:0.7rem;">${e.message.substring(0,80)}</span>`;
+        }
+        done++;
+        document.getElementById('progressFill').style.width = Math.round((done/SCENES.length)*100)+'%';
+        if (s.id < SCENES.length) await new Promise(r => setTimeout(r, 800));
+    }
+
+    if (audioBuffers.length > 0) await mergeAudio();
+    document.getElementById('statusText').textContent = `✅ Done! ${audioBuffers.length}/${SCENES.length} scenes generated.`;
+    btn.textContent = '🔄 Re-Generate'; btn.disabled = false; isGenerating = false;
+}
+
+async function mergeAudio() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
+    const bufs = [];
+    for (const item of audioBuffers) {
+        try { bufs.push({ buffer: await ctx.decodeAudioData(b64ToAB(item.base64)), pauseMs: item.pauseMs }); } catch(e) {}
+    }
+    if (!bufs.length) return;
+    let total = 0;
+    bufs.forEach(b => { total += b.buffer.length + Math.floor((b.pauseMs/1000)*ctx.sampleRate); });
+    const merged = ctx.createBuffer(1, total, ctx.sampleRate);
+    const out = merged.getChannelData(0);
+    let off = 0;
+    bufs.forEach(b => { out.set(b.buffer.getChannelData(0), off); off += b.buffer.length + Math.floor((b.pauseMs/1000)*ctx.sampleRate); });
+
+    // WAV encode
+    const numSamples = merged.length, data = merged.getChannelData(0);
+    const wavBuf = new ArrayBuffer(44 + numSamples * 2), v = new DataView(wavBuf);
+    const sr = merged.sampleRate;
+    const writeStr = (o,s) => { for(let i=0;i<s.length;i++) v.setUint8(o+i,s.charCodeAt(i)); };
+    writeStr(0,'RIFF'); v.setUint32(4,36+numSamples*2,true); writeStr(8,'WAVE'); writeStr(12,'fmt ');
+    v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+    v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true);
+    writeStr(36,'data'); v.setUint32(40,numSamples*2,true);
+    for(let i=0,o=44;i<numSamples;i++,o+=2) { const s=Math.max(-1,Math.min(1,data[i])); v.setInt16(o,s<0?s*0x8000:s*0x7FFF,true); }
+
+    window._wavBlob = new Blob([wavBuf], { type: 'audio/wav' });
+    document.getElementById('finalPlayer').src = URL.createObjectURL(window._wavBlob);
+    document.getElementById('finalBox').style.display = 'block';
+    ctx.close();
+}
+
+function downloadWav() {
+    if (!window._wavBlob) return;
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(window._wavBlob);
+    a.download = 'voiceover_final.wav';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+// Init
+renderSceneGrid();
+renderVoScenes();
+renderTags();
+</script>
+</body>
+</html>
