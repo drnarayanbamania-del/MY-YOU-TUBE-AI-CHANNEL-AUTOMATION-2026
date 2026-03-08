@@ -777,7 +777,7 @@ Detail: Add subtle "2027" hidden in the background design<span class="copy-hint"
             </button>
 
             <div style="text-align: center; margin-bottom: 20px;">
-                <a href="http://localhost:3000/api/download-zip" class="btn btn-outline" style="display: block; text-decoration: none;">
+                <a href="/api/download-zip" class="btn btn-outline" style="display: block; text-decoration: none;">
                     📦 Download Full Video Package (.zip)
                 </a>
             </div>
@@ -902,7 +902,7 @@ function startAutomations() {
         };
         
         // This initiates streaming!
-        fetch('http://localhost:3000/api/run-automation', payload).then(async response => {
+        fetch('/api/run-automation', payload).then(async response => {
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
             let isDone = false;
@@ -1071,7 +1071,7 @@ async function textToSpeech(text) {
     };
     if (body.model === 'bulbul:v3') body.temperature = 0.7;
 
-    const res = await fetch('http://localhost:3000/api/proxy-tts', {
+    const res = await fetch('/api/proxy-tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'api-subscription-key': document.getElementById('apiKey').value },
         body: JSON.stringify(body),
