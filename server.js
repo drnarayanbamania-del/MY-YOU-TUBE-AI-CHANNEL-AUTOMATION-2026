@@ -7,7 +7,7 @@ const { google } = require('googleapis');
 require('dotenv').config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.static(path.join(__dirname)));
@@ -77,17 +77,16 @@ app.get('/api/download-zip', (req, res) => {
     const zipName = 'youtube_video_package.zip';
     const zipPath = path.join(__dirname, zipName);
     
-    console.log("📦 Creating ZIP package...");
-
-    // PowerShell command to zip relevant files
+    // Use Linux-compatible zip command (standard on Render/Linux)
     // Items: final_video.mp4, voiceover_final.wav, niche_config.js, agi_scenes directory, agi_thumbnail.png
-    const psCommand = `Compress-Archive -Path "final_video.mp4", "voiceover_final.wav", "niche_config.js", "agi_scenes", "agi_thumbnail.png" -DestinationPath "${zipPath}" -Force`;
+    const zipCommand = `zip -r "${zipPath}" final_video.mp4 voiceover_final.wav niche_config.js agi_scenes agi_thumbnail.png`;
 
     const { exec } = require('child_process');
-    exec(`powershell -Command "${psCommand}"`, (error) => {
+    exec(zipCommand, (error) => {
         if (error) {
             console.error('ZIP Error:', error);
-            return res.status(500).send('Error creating ZIP');
+            // Fallback: If zip is not installed, try simple file send or error
+            return res.status(500).send('Error creating ZIP (Ensure "zip" is installed on server)');
         }
 
         res.download(zipPath, zipName, (err) => {
@@ -113,8 +112,11 @@ app.get('/api/youtube/auth-url', (req, res) => {
     const content = fs.readFileSync(CREDENTIALS_PATH);
     const credentials = JSON.parse(content);
     const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
-    
-    const redirect_uri = process.env.REDIRECT_URI || (redirect_uris ? redirect_uris[0] : 'http://localhost:3000');
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const defaultRedirect = `${protocol}://${host}`;
+    const redirect_uri = process.env.REDIRECT_URI || defaultRedirect;
+
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
 
     const authUrl = oAuth2Client.generateAuthUrl({ access_type: 'offline', scope: SCOPES, prompt: 'consent' });
@@ -127,8 +129,11 @@ app.post('/api/youtube/callback', async (req, res) => {
 
     const content = fs.readFileSync(CREDENTIALS_PATH);
     const credentials = JSON.parse(content);
-    const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
-    const redirect_uri = process.env.REDIRECT_URI || (redirect_uris ? redirect_uris[0] : 'http://localhost:3000');
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const defaultRedirect = `${protocol}://${host}`;
+    const redirect_uri = process.env.REDIRECT_URI || defaultRedirect;
+
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
 
     try {
