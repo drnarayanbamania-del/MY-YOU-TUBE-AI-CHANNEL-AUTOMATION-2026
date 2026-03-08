@@ -45,6 +45,8 @@ function buildScene(scene, index) {
             // Options
             .outputOptions([
                 '-c:v libx264',
+                '-preset ultrafast', // Very important for low memory servers
+                '-threads 1',        // Prevent Render 512MB RAM OOM kill
                 '-c:a aac',
                 '-b:a 192k',
                 '-pix_fmt yuv420p',
