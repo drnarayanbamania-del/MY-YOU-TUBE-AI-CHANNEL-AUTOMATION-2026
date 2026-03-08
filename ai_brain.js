@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config(); // Load environment variables from .env
 
 // ==========================================
 // 🧠 AI RESEARCHER CONFIGURATION
