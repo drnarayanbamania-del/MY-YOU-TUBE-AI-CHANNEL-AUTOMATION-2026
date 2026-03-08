@@ -9,6 +9,16 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// ==========================================
+// 🔐 AUTO-CREATE client_secret.json FROM ENV
+// ==========================================
+const CLIENT_SECRET_FILE = path.join(__dirname, 'client_secret.json');
+if (!fs.existsSync(CLIENT_SECRET_FILE) && process.env.GOOGLE_CLIENT_SECRET_JSON) {
+    console.log('📝 Creating client_secret.json from environment variable...');
+    fs.writeFileSync(CLIENT_SECRET_FILE, process.env.GOOGLE_CLIENT_SECRET_JSON);
+    console.log('✅ client_secret.json created successfully!');
+}
+
 app.use(cors());
 app.use(express.static(path.join(__dirname)));
 app.use(express.json());
