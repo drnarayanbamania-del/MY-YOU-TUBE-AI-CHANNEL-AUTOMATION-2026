@@ -138,8 +138,13 @@ const TOKEN_PATH = path.join(__dirname, 'youtube_token.json');
 const SCOPES = ['https://www.googleapis.com/auth/youtube.upload'];
 
 app.get('/api/youtube/auth-url', (req, res) => {
+    // Attempt creation if it hasn't been created yet but the ENV exists
+    if (!fs.existsSync(CREDENTIALS_PATH) && process.env.GOOGLE_CLIENT_SECRET_JSON) {
+        fs.writeFileSync(CREDENTIALS_PATH, process.env.GOOGLE_CLIENT_SECRET_JSON);
+    }
+
     if (!fs.existsSync(CREDENTIALS_PATH)) {
-        return res.status(500).json({ error: 'client_secret.json missing on server' });
+        return res.status(500).json({ error: 'Missing GOOGLE_CLIENT_SECRET_JSON in Render Environment Variables!' });
     }
 
     const content = fs.readFileSync(CREDENTIALS_PATH);
@@ -162,6 +167,7 @@ app.post('/api/youtube/callback', async (req, res) => {
 
     const content = fs.readFileSync(CREDENTIALS_PATH);
     const credentials = JSON.parse(content);
+    const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
     const host = req.get('host');
     const protocol = req.protocol;
     const defaultRedirect = `${protocol}://${host}`;
