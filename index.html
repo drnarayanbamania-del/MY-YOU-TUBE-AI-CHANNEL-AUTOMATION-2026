@@ -838,7 +838,7 @@ async function loginToYoutube() {
         if (data.url) {
             window.location.href = data.url;
         } else {
-            alert('Error: client_secret.json might be missing on server!');
+            alert(data.error ? 'Error: ' + data.error : 'Error: client_secret.json might be missing on server!');
             btn.disabled = false;
         }
     } catch (e) { 
