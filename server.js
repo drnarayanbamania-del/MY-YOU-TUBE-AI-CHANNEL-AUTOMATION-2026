@@ -82,6 +82,16 @@ app.post('/api/proxy-tts', async (req, res) => {
     }
 });
 
+// Download ONLY the MP4 Video
+app.get('/api/download-mp4', (req, res) => {
+    const videoPath = path.join(__dirname, 'final_video.mp4');
+    if (fs.existsSync(videoPath)) {
+        res.download(videoPath, 'YouTube_AI_Video.mp4');
+    } else {
+        res.status(404).send('Video not found. Please run the automation first.');
+    }
+});
+
 // Create and Download ZIP Package
 app.get('/api/download-zip', (req, res) => {
     const archiver = require('archiver');
