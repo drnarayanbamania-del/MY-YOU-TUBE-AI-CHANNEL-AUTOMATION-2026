@@ -161,8 +161,8 @@ app.get('/api/youtube/auth-url', (req, res) => {
     const credentials = JSON.parse(content);
     const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
     const host = req.get('host');
-    const protocol = req.protocol;
-    const defaultRedirect = `${protocol}://${host}`;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const defaultRedirect = `${protocol}://${host}/`;
     const redirect_uri = process.env.REDIRECT_URI || defaultRedirect;
 
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
@@ -179,8 +179,8 @@ app.post('/api/youtube/callback', async (req, res) => {
     const credentials = JSON.parse(content);
     const { client_secret, client_id, redirect_uris } = credentials.installed || credentials.web;
     const host = req.get('host');
-    const protocol = req.protocol;
-    const defaultRedirect = `${protocol}://${host}`;
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const defaultRedirect = `${protocol}://${host}/`;
     const redirect_uri = process.env.REDIRECT_URI || defaultRedirect;
 
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uri);
