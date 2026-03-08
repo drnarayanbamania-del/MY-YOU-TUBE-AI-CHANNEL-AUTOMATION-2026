@@ -36,11 +36,19 @@ runCommand('node build_video.js');
 // 3. Upload to YouTube API
 runCommand('node upload_to_youtube.js final_video.mp4');
 
-console.log('\n============================================');
-console.log('🎉 THE AUTOMATION WORKFLOW IS COMPLETE!');
-console.log('✅ 1. AI Voiceover generated');
-console.log('✅ 2. Visuals & Audio compiled');
-console.log('✅ 3. Metadata packaged');
-console.log('✅ 4. Video uploaded to YouTube Studio');
-console.log('Go to YouTube Studio to view and publish your new video!');
-console.log('============================================');
+const endTime = new Date();
+const istTime = endTime.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'full', timeStyle: 'medium' });
+
+console.log('\n');
+console.log('╔════════════════════════════════════════════╗');
+console.log('║  🎉 AUTOMATION WORKFLOW COMPLETE!          ║');
+console.log('╠════════════════════════════════════════════╣');
+console.log(`║  📅 Completed At : ${istTime}`);
+console.log('║  ✅ 1. AI Research & Topic Selection       ║');
+console.log('║  ✅ 2. Voiceover Generated (Sarvam AI)     ║');
+console.log('║  ✅ 3. Thumbnail Created (OpenAI)          ║');
+console.log('║  ✅ 4. Video Compiled (FFmpeg)              ║');
+console.log('║  ✅ 5. Uploaded to YouTube Studio!          ║');
+console.log('╠════════════════════════════════════════════╣');
+console.log('║  🚀 Go to YouTube Studio to publish!       ║');
+console.log('╚════════════════════════════════════════════╝');

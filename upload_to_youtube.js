@@ -129,11 +129,31 @@ function uploadVideo(auth) {
     });
 
     req.then((res) => {
-        console.log('\n\n✅ VIDEO UPLOADED SUCCESSFULLY!');
-        console.log(`🔗 Video URL: https://youtube.com/watch?v=${res.data.id}`);
-        console.log('Wait a few minutes for YouTube to process the video.');
+        const now = new Date();
+        const istTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'full', timeStyle: 'medium' });
+        
+        console.log('\n');
+        console.log('╔════════════════════════════════════════════╗');
+        console.log('║   ✅ VIDEO UPLOADED SUCCESSFULLY! 🎉       ║');
+        console.log('╠════════════════════════════════════════════╣');
+        console.log(`║  📅 Upload Date : ${istTime}`);
+        console.log(`║  🔗 Video URL   : https://youtube.com/watch?v=${res.data.id}`);
+        console.log(`║  🎬 Video Title : ${res.data.snippet?.title || VIDEO_NICHE}`);
+        console.log(`║  🔒 Status      : ${res.data.status?.privacyStatus || 'private'}`);
+        console.log(`║  📊 Video ID    : ${res.data.id}`);
+        console.log('╠════════════════════════════════════════════╣');
+        console.log('║  ⏳ YouTube is processing your video...     ║');
+        console.log('║  It may take 5-15 minutes to appear.       ║');
+        console.log('╚════════════════════════════════════════════╝');
     }).catch((err) => {
-        console.error('\n\n❌ ERROR UPLOADING VIDEO:');
-        console.error(err.message);
+        const now = new Date();
+        const istTime = now.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'full', timeStyle: 'medium' });
+        
+        console.error('\n\n❌ UPLOAD FAILED!');
+        console.error(`📅 Time: ${istTime}`);
+        console.error(`❌ Error: ${err.message}`);
+        if (err.message.includes('quota')) {
+            console.error('💡 Tip: YouTube API has a daily quota limit. Try again tomorrow.');
+        }
     });
 }
