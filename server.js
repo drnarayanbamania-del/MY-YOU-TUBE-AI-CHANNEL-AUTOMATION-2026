@@ -74,27 +74,50 @@ app.post('/api/proxy-tts', async (req, res) => {
 
 // Create and Download ZIP Package
 app.get('/api/download-zip', (req, res) => {
+    const archiver = require('archiver');
     const zipName = 'youtube_video_package.zip';
-    const zipPath = path.join(__dirname, zipName);
     
-    // Use Linux-compatible zip command (standard on Render/Linux)
-    // Items: final_video.mp4, voiceover_final.wav, niche_config.js, agi_scenes directory, agi_thumbnail.png
-    const zipCommand = `zip -r "${zipPath}" final_video.mp4 voiceover_final.wav niche_config.js agi_scenes agi_thumbnail.png`;
+    // Set headers for file download
+    res.attachment(zipName);
+    
+    const archive = archiver('zip', { zlib: { level: 9 } });
 
-    const { exec } = require('child_process');
-    exec(zipCommand, (error) => {
-        if (error) {
-            console.error('ZIP Error:', error);
-            // Fallback: If zip is not installed, try simple file send or error
-            return res.status(500).send('Error creating ZIP (Ensure "zip" is installed on server)');
+    // Listen for all errors
+    archive.on('error', (err) => {
+        console.error('Archive error:', err);
+        if (!res.headersSent) {
+            res.status(500).send({ error: err.message });
         }
-
-        res.download(zipPath, zipName, (err) => {
-            if (err) console.error('Download Error:', err);
-            // Delete the zip after sending
-            if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-        });
     });
+
+    // Pipe archive data to the response
+    archive.pipe(res);
+
+    // List of essential files to check
+    const filesToInclude = [
+        { name: 'final_video.mp4', path: path.join(__dirname, 'final_video.mp4') },
+        { name: 'voiceover_final.wav', path: path.join(__dirname, 'voiceover_final.wav') },
+        { name: 'niche_config.js', path: path.join(__dirname, 'niche_config.js') },
+        { name: 'agi_thumbnail.png', path: path.join(__dirname, 'agi_thumbnail.png') }
+    ];
+
+    // Add files to archive only if they exist
+    filesToInclude.forEach(file => {
+        if (fs.existsSync(file.path)) {
+            archive.file(file.path, { name: file.name });
+        } else {
+            console.warn(`File missing for ZIP: ${file.name}`);
+        }
+    });
+
+    // Add folder if it exists
+    const scenesFolder = path.join(__dirname, 'agi_scenes');
+    if (fs.existsSync(scenesFolder)) {
+        archive.directory(scenesFolder, 'agi_scenes');
+    }
+
+    // Finalize the archive
+    archive.finalize();
 });
 
 // ==========================================

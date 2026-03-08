@@ -611,6 +611,30 @@ Detail: Add subtle "2027" hidden in the background design<span class="copy-hint"
 
     <!-- ============ SEO & UPLOAD ============ -->
     <div class="section" id="sec-seo">
+        
+        <!-- ============ ATTACHED YOUTUBE AUTHENTICATION HUB ============ -->
+        <div class="card" style="border-left: 4px solid var(--accent-purple); border-color: var(--accent-purple);">
+            <div class="card-title">🔐 STEP 1: Connect YouTube Channel</div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
+                Before you can upload videos to YouTube from this server (especially on Render), you must authorize this app. This creates a secure token on the server for automated uploading.
+            </p>
+
+            <div id="authStatusArea" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Server Status:</span>
+                    <span id="authBadge" class="badge" style="background: #ff5f56; margin-left: 10px;">Disconnected</span>
+                </div>
+                <button class="btn btn-primary" id="btnYoutubeLogin" onclick="loginToYoutube()" style="margin: 0; background-color: var(--accent-purple); border: none;">
+                    Get Auth Token
+                </button>
+            </div>
+            
+            <div id="authCallbackArea" style="display: none; padding: 15px; border: 1px dashed var(--accent-purple); border-radius: var(--radius-sm); margin-top: 10px;">
+                <p style="font-size: 0.8rem; color: var(--accent-purple); font-weight: bold; margin-bottom: 5px;">🔄 Completing Auth...</p>
+                <p id="authCallbackStatus" style="font-size: 0.75rem; color: var(--text-secondary);">Exchanging security code with server...</p>
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-title">🏆 Final Title</div>
             <div class="meta-value" onclick="copyText(this)" style="font-size: 1.1rem; font-weight: 700; color: var(--accent-yellow);">
@@ -724,30 +748,6 @@ Detail: Add subtle "2027" hidden in the background design<span class="copy-hint"
         </div>
     </div>
 
-    <!-- ============ REMOTE AUTHENTICATION HUB ============ -->
-    <div class="section" id="sec-auth">
-        <div class="card" style="border-left: 4px solid var(--accent-purple);">
-            <div class="card-title">🔐 Remote YouTube Authentication</div>
-            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">
-                Before you can upload videos to YouTube from this server (especially on Railway/Render), you must allow this app to access your YouTube channel. This creates a secure <code>youtube_token.json</code> on the server.
-            </p>
-
-            <div id="authStatusArea" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
-                <div>
-                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Current Status:</span>
-                    <span id="authBadge" class="badge" style="background: #ff5f56; margin-left: 10px;">Not Connected</span>
-                </div>
-                <button class="btn btn-primary" id="btnYoutubeLogin" onclick="loginToYoutube()" style="margin: 0;">
-                    Connect YouTube Channel
-                </button>
-            </div>
-            
-            <div id="authCallbackArea" style="display: none; padding: 15px; border: 1px dashed var(--accent-purple); border-radius: var(--radius-sm); margin-top: 10px;">
-                <p style="font-size: 0.8rem; color: var(--accent-purple); font-weight: bold; margin-bottom: 5px;">🔄 Completing connection...</p>
-                <p id="authCallbackStatus" style="font-size: 0.75rem; color: var(--text-secondary);">Sharing secure token with server...</p>
-            </div>
-        </div>
-    </div>
 
     <!-- ============ AUTOMATION HUB ============ -->
     <div class="section" id="sec-automation">
