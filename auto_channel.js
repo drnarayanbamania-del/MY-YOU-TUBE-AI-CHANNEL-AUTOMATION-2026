@@ -17,6 +17,13 @@ function runCommand(command) {
     }
 }
 
+// 0. SELF-HEALING: Ensure dependencies and lock file exists
+if (!fs.existsSync(path.join(__dirname, 'package-lock.json'))) {
+    console.log('⚠️ Dependencies lock file not found! Fixing automation with npm install...');
+    runCommand('npm install --package-lock-only');
+    console.log('✅ Automation fixed! Dependencies lock file created.');
+}
+
 // 1. AI Research & Brainstorming (Optional: Requires GEMINI_API_KEY)
 if (process.env.GEMINI_API_KEY) {
     runCommand('node ai_brain.js');

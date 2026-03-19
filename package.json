@@ -5,6 +5,7 @@
   "main": "generate_voiceover.js",
   "scripts": {
     "start": "node server.js",
+    "automation": "node auto_channel.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
